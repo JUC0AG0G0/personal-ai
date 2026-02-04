@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from .llm import ask_ollama
+from .agent import Agent
 
 app = FastAPI()
+agent = Agent()
 
 class PromptRequest(BaseModel):
     prompt: str
@@ -13,5 +14,5 @@ def root():
 
 @app.post("/ask")
 def ask_llm(request: PromptRequest):
-    response = ask_ollama(request.prompt)
+    response = agent.ask(request.prompt)
     return {"response": response}
