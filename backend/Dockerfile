@@ -2,11 +2,26 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+# Installer dépendances système
+RUN apt-get update && \
+    apt-get install -y curl git unzip zstd && \
+    rm -rf /var/lib/apt/lists/*
 
+# Installer Ollama
+RUN curl -s https://ollama.com/install.sh | bash
+
+# Copier requirements et installer
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copier le code backend
 COPY . .
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Copier script entrypoint
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
 
+
+# Entrypoint pour lancer daemon et uvicorn
+ENTRYPOINT ["/app/entrypoint.sh"]
