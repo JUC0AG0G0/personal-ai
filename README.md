@@ -20,3 +20,7 @@ Exemple requette :
 curl -X POST http://localhost:8000/ask \
 -H "Content-Type: application/json" \
 -d '{"prompt": "Dis-moi bonjour comme un pirate."}'
+
+
+
+

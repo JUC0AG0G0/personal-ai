@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   backend:
     build: ./backend
     container_name: personal_ai_backend
@@ -10,6 +9,10 @@ services:
     volumes:
       - ./backend:/app
     restart: unless-stopped
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
 
   frontend:
     build: ./frontend
@@ -20,3 +23,14 @@ services:
       - ./frontend:/app
     restart: unless-stopped
 
+  ollama:
+    build: ./ollama
+    container_name: personal_ai_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

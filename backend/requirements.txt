@@ -1,3 +1,7 @@
 fastapi
 uvicorn
+chromadb
+langchain
+langchain-core
+langchain-community
 
