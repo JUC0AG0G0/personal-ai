@@ -1,15 +1,20 @@
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import OllamaEmbeddings
+from __future__ import annotations
+
+from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings
 from langchain_core.documents import Document
+import os
 
 class VectorStore:
     def __init__(self, persist_dir="chroma_db"):
         self.persist_dir = persist_dir
-        self.db = Chroma(persist_directory=persist_dir, embedding_function=OllamaEmbeddings(
-    model="nomic-embed-text",
-    base_url="http://ollama:11434"
-)
-)
+        self.db = Chroma(
+            persist_directory=persist_dir,
+            embedding_function=OllamaEmbeddings(
+                model="nomic-embed-text",
+                base_url=os.getenv("OLLAMA_HOST")
+            )
+        )
 
     def add_documents(self, docs: list[Document]):
         """Ajoute des documents à la base vectorielle"""

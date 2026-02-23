@@ -1,10 +1,11 @@
 import requests
 import json
+import os
 
 class LLMManager:
-    def __init__(self, model_name="llama3"):
+    def __init__(self, model_name="llama3:8b"):
         self.model_name = model_name
-        self.api_url = "http://personal_ai_ollama:11434/api/generate"
+        self.api_url = f"{os.getenv('OLLAMA_HOST')}/api/generate"
 
     def generate(self, prompt: str) -> str:
         payload = {"model": self.model_name, "prompt": prompt}
